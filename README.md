@@ -107,14 +107,13 @@ The site is published by **ASF infrastructure**, not GitHub Pages. On every push
 ```yaml
 publish:
   whoami: publish
-  hostname: magpie.apache.org
 ```
 
-Production URL: **[magpie.apache.org](https://magpie.apache.org/)** (served at the apex root).
+ASF infra serves the `publish` branch at the project's inferred hostname — `magpie-site` → **[magpie.apache.org](https://magpie.apache.org/)** (served at the apex root). The hostname must **not** be set explicitly via a `hostname:` field; asfyaml forbids naming your own `$project.apache.org` ("it has to be inferred to prevent abuse"), and doing so stops the site from publishing.
 
 The site is built with `base: '/'` so all links and assets resolve against the apex domain. Set `SITE_BASE` / `SITE_URL` to preview under a subpath (e.g. GitHub Pages).
 
-> One-time infra setup (outside this repo): the `magpie.apache.org` hostname and its TLS must be registered with ASF Infra, and the `publish` branch created on first CI run.
+> One-time infra setup (outside this repo): for a brand-new project, ASF Infra may still need to provision DNS/TLS for `magpie.apache.org` before the inferred hostname resolves.
 
 ## License
 
