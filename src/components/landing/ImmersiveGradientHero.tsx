@@ -419,7 +419,7 @@ function ImmersiveGradientHero() {
           ))}
         </div>
       </div>
-      <div id="features" className="flex w-full flex-col items-center gap-16 bg-default-background px-8 py-24 mobile:gap-10 mobile:px-4 mobile:py-14">
+      <div id="features" className="flex w-full flex-col items-center gap-16 bg-warning-50 px-8 py-24 mobile:gap-10 mobile:px-4 mobile:py-14">
         <BlurFade inView className="flex flex-col items-center gap-4 max-w-[600px]">
           <div className="flex items-center gap-2 rounded-full border border-solid border-brand-200 bg-brand-50 px-4 py-1.5">
             <FeatherLayers className="text-caption font-caption text-brand-600" />
@@ -620,7 +620,7 @@ function ImmersiveGradientHero() {
           })}
         </div>
       </div>
-      <div className="flex w-full flex-col items-center border-y border-solid border-neutral-100 bg-neutral-50">
+      <div className="flex w-full flex-col items-center border-y border-solid border-warning-100 bg-warning-50">
         <div className="flex w-full flex-col items-center gap-14 px-8 py-24 max-w-[1100px] mobile:gap-8 mobile:px-4 mobile:py-14">
           <div className="flex flex-col items-center gap-4 max-w-[600px]">
             <div className="flex items-center gap-2 rounded-full border border-solid border-brand-200 bg-brand-50 px-4 py-1.5">
