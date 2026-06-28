@@ -178,6 +178,7 @@ function ImmersiveGradientHero() {
             />
           </a>
           <div className="flex items-center gap-7 mobile:hidden">
+            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#why">Why Magpie?</a>
             <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#features">Features</a>
             <a className="text-body font-body text-brand-600 hover:text-brand-700" href={withBase("/docs")}>Docs</a>
             <a className="text-body font-body text-brand-600 hover:text-brand-700" href="https://lists.apache.org/list.html?dev@magpie.apache.org">Community</a>
