@@ -75,24 +75,32 @@ const SKILL_FAMILIES = [
     name: "setup",
     icon: FeatherLayers,
     modes: "Infrastructure",
+    overview: "/docs/setup/readme",
+    cta: "Worried an agent will leak your credentials or wreck your machine?",
     desc: "Isolated agent setup, framework adoption & maintenance, shared-config sync. The prerequisite every adopter starts from.",
   },
   {
     name: "security",
     icon: FeatherShield,
     modes: "Triage · Drafting",
+    overview: "/docs/security/readme",
+    cta: "Security reports pile up and every step needs an audit trail?",
     desc: "The 16-step security-issue lifecycle — from security@ import through CVE allocation and publication, with state sync. Maintainer-only.",
   },
   {
     name: "pr-management",
     icon: FeatherGitPullRequest,
     modes: "Triage",
+    overview: "/docs/pr-management/readme",
+    cta: "Your PR queue is out of control?",
     desc: "Maintainer-facing PR-queue management — triage, queue stats, and deep code review.",
   },
   {
     name: "issue",
     icon: FeatherFilter,
     modes: "Triage · Drafting",
+    overview: "/docs/issue-management/readme",
+    cta: "Issue backlog is a mess of duplicates and stale reports?",
     desc: "Issue lifecycle — triage, bug reproduction, fix drafting, and backlog re-assessment against the current branch.",
   },
   {
@@ -100,12 +108,16 @@ const SKILL_FAMILIES = [
     icon: FeatherActivity,
     modes: "Triage",
     status: "experimental",
+    overview: "/docs/repo-health/readme",
+    cta: "Repo hygiene quietly slipping — CI, deps, licenses, flaky tests?",
     desc: "Read-only maintenance audits — CI runner obsolescence, workflow security, stale or vulnerable dependencies, license/NOTICE drift, and flaky tests. Each proposes remedies for the maintainer to apply.",
   },
   {
     name: "release-management",
     icon: FeatherGitMerge,
     modes: "Triage · Drafting",
+    overview: "/docs/release-management/readme",
+    cta: "Cutting a release is a manual, error-prone slog?",
     desc: "The 14-step ASF release lifecycle — planning, RC cut & sign, [VOTE], tally, promote, [ANNOUNCE], archive, audit. The agent never holds the signing key or publishes.",
   },
   {
@@ -113,18 +125,24 @@ const SKILL_FAMILIES = [
     icon: FeatherBookOpen,
     modes: "Mentoring",
     status: "experimental",
+    overview: "/docs/mentoring/readme",
+    cta: "New contributors get stuck and quietly drift away?",
     desc: "Contributor mentoring — spec and tone guide in place; first skill (pr-management-mentor) shipping.",
   },
   {
     name: "contributor-growth",
     icon: FeatherUsers,
     modes: "Mentoring · Triage",
+    overview: "/docs/contributor-growth/readme",
+    cta: "Hard to grow contributors into committers?",
     desc: "The contributor-to-committer path — welcome first-timers, keep the backlog newcomer-ready, track activity, assemble nomination evidence, and run post-vote onboarding.",
   },
   {
     name: "utilities",
     icon: FeatherPenTool,
     modes: "Meta",
+    overview: "/docs/utilities/readme",
+    cta: "Want to build or maintain your own skills?",
     desc: "Framework meta-skills — author or update skills (write-skill) and print a live index of every skill (list-skills).",
   },
 ];
@@ -215,7 +233,7 @@ function ImmersiveGradientHero() {
               </BlurFade>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <a href={withBase("/docs")}>
+              <a href={withBase("/docs/setup/install-recipes")}>
                 <ShimmerButton
                   shimmerColor="#ffffff"
                   background="rgb(0 74 173)"
@@ -367,6 +385,40 @@ function ImmersiveGradientHero() {
         </div>
       </div>
       <div className="flex h-24 w-full flex-none items-start bg-gradient-to-b from-brand-600 to-brand-50" />
+      <div id="why" className="flex w-full flex-col items-center bg-default-background px-8 pt-20 pb-4 mobile:px-4 mobile:pt-12">
+        <BlurFade inView className="flex flex-col items-center gap-4 max-w-[660px] pb-12 mobile:pb-8">
+          <div className="flex items-center gap-2 rounded-full border border-solid border-brand-200 bg-brand-50 px-4 py-1.5">
+            <FeatherCheckCircle className="text-caption font-caption text-brand-600" />
+            <span className="text-caption font-caption text-brand-600">
+              Why Magpie
+            </span>
+          </div>
+          <span className="font-['Inter'] text-[38px] font-[700] leading-[44px] text-default-font text-center -tracking-[0.035em] mobile:font-['Jost'] mobile:text-[28px] mobile:font-[400] mobile:leading-[34px] mobile:tracking-normal">
+            Why would you want Magpie on your project?
+          </span>
+          <span className="text-body font-body text-subtext-color text-center">
+            Pick the pain you feel today — each one maps to a family of skills
+            you can adopt on its own. The agent proposes; you decide.
+          </span>
+        </BlurFade>
+        <div className="w-full items-stretch gap-4 grid grid-cols-3 auto-rows-fr max-w-[1100px] mobile:grid-cols-1">
+          {SKILL_FAMILIES.map((family) => (
+            <a
+              key={family.name}
+              href={withBase(family.overview)}
+              className="group flex h-full flex-col items-start gap-2 rounded-2xl border border-solid border-neutral-200 bg-default-background px-5 py-5 shadow-sm hover:border-brand-200 hover:shadow-md transition-all"
+            >
+              <span className="text-body-bold font-body-bold text-default-font">
+                {family.cta}
+              </span>
+              <span className="mt-auto inline-flex items-center gap-1 pt-2 text-caption font-caption text-brand-600 group-hover:text-brand-700">
+                Adopt the <span className="font-mono">{family.name}</span> family
+                <FeatherArrowRight className="size-3.5" />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
       <div id="features" className="flex w-full flex-col items-center gap-16 bg-default-background px-8 py-24 mobile:gap-10 mobile:px-4 mobile:py-14">
         <BlurFade inView className="flex flex-col items-center gap-4 max-w-[600px]">
           <div className="flex items-center gap-2 rounded-full border border-solid border-brand-200 bg-brand-50 px-4 py-1.5">
@@ -541,9 +593,10 @@ function ImmersiveGradientHero() {
           {SKILL_FAMILIES.map((family) => {
             const Icon = family.icon;
             return (
-              <div
+              <a
                 key={family.name}
-                className="flex h-full flex-col items-start gap-3 rounded-2xl border border-solid border-neutral-200 bg-default-background px-5 py-5 shadow-sm hover:border-brand-200 hover:shadow-md transition-all"
+                href={withBase(family.overview)}
+                className="group flex h-full flex-col items-start gap-3 rounded-2xl border border-solid border-neutral-200 bg-default-background px-5 py-5 shadow-sm hover:border-brand-200 hover:shadow-md transition-all"
               >
                 <div className="flex w-full items-center justify-between">
                   <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-100">
@@ -558,7 +611,11 @@ function ImmersiveGradientHero() {
                 <span className="text-caption font-caption text-subtext-color">
                   {family.desc}
                 </span>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 pt-1 text-caption font-caption text-brand-600 group-hover:text-brand-700">
+                  Read the overview
+                  <FeatherArrowRight className="size-3.5" />
+                </span>
+              </a>
             );
           })}
         </div>
