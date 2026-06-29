@@ -51,6 +51,16 @@ repos:
         args: [--markdown-linebreak-ext=md]
   - repo: local
     hooks:
+      # Guard against the Astro/JSX whitespace-collapse bug (#10, #29): a prose
+      # text run immediately followed by an inline element on the next line loses
+      # the space between them at render time. Fix with an explicit {" "} spacer
+      # (see AGENTS.md § "Whitespace around inline elements in .astro / JSX").
+      - id: astro-whitespace
+        name: Check for Astro/JSX whitespace-collapse missing spaces
+        entry: node scripts/check-astro-spaces.mjs
+        language: system
+        files: \.(astro|tsx|jsx)$
+        pass_filenames: true
       # Refresh the committer/PMC roster + GitHub avatars served by the landing
       # page (src/data/community.json + public/community-avatars/). Manual stage
       # only: it calls the GitHub API and writes binary avatars, so it is run on
