@@ -29,8 +29,8 @@ export function SiteFooter() {
             alt="Apache Magpie"
           />
           <span className="text-caption font-caption text-subtext-color max-w-[260px]">
-            An Apache Software Foundation project. AI-powered assistance for
-            open-source maintainers.
+            An Apache Software Foundation Top Level Project<br />
+            <br />AI-powered assistance for open-source maintainers.
           </span>
           <div className="flex items-center gap-2">
             <a href="https://github.com/apache/magpie" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -47,7 +47,6 @@ export function SiteFooter() {
         <div className="flex grow shrink-0 basis-0 flex-wrap items-start gap-8">
           <div className="flex grow shrink-0 basis-0 flex-col items-start gap-3 min-w-[130px]">
             <span className="text-body-bold font-body-bold text-default-font">Project</span>
-            <a className="text-body font-body text-subtext-color hover:text-brand-600" href={`${withBase("/")}#features`}>Features</a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href={withBase("/docs")}>Documentation</a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://github.com/apache/magpie/issues">Roadmap</a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://github.com/apache/magpie/releases">Changelog</a>
@@ -65,10 +64,16 @@ export function SiteFooter() {
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/">Apache Home</a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/licenses/">License</a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/events/current-event">Events</a>
-            <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/foundation/sponsorship.html">Sponsorship</a>
-            <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/foundation/thanks.html">Thanks</a>
-            <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/security/">Security</a>
-            <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a>
+            <div className="flex items-center gap-2">
+              <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/foundation/sponsorship.html">Sponsorship</a>
+              <span className="text-body font-body text-subtext-color">·</span>
+              <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/foundation/thanks.html">Thanks</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://www.apache.org/security/">Security</a>
+              <span className="text-body font-body text-subtext-color">·</span>
+              <a className="text-body font-body text-subtext-color hover:text-brand-600" href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a>
+            </div>
           </div>
         </div>
       </div>
