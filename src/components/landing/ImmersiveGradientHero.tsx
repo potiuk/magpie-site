@@ -188,7 +188,86 @@ const skillCountLabel = (family: { name: string; status?: string }) => {
   return family.status ? `${base} · ${family.status}` : base;
 };
 
+// In-page sections, in document order. Drives both the floating scroll-spy
+// SectionNav (desktop) and the collapsible menu (smaller screens). Keep the
+// ids in sync with the matching `id="…"` on each section below.
+const SECTIONS: { id: string; label: string }[] = [
+  { id: "why-magpie", label: "Why Magpie?" },
+  { id: "maintainer-first", label: "Maintainers first" },
+  { id: "agentic-automations", label: "Agentic automations" },
+  { id: "skill-families", label: "Skill Families" },
+  { id: "privacy-security", label: "Privacy & Security" },
+  { id: "vendor-neutrality", label: "Vendor Neutrality" },
+  { id: "organisation-agnostic", label: "Organisations" },
+  { id: "community", label: "Community" },
+];
+
+// Floating scroll-spy section navigation. Shown only on wide (lg+) screens
+// where there is room beside the content; the section links collapse into the
+// top-bar menu below that. Tracks the section currently in view via an
+// IntersectionObserver and highlights it.
+function SectionNav() {
+  const [active, setActive] = React.useState<string>(SECTIONS[0].id);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry nearest the viewport centre that is intersecting.
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      // A tall band centred on the viewport: a section counts as "active"
+      // roughly when it occupies the middle of the screen.
+      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
+    SECTIONS.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <nav
+      aria-label="Page sections"
+      className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-1.5 lg:flex"
+    >
+      {SECTIONS.map((s) => {
+        const isActive = active === s.id;
+        return (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            aria-current={isActive ? "true" : undefined}
+            className="group flex items-center justify-end gap-2.5"
+          >
+            <span
+              className={`whitespace-nowrap rounded-md bg-default-background/90 px-2 py-0.5 text-caption font-caption shadow-sm ring-1 ring-neutral-200 transition-opacity ${
+                isActive
+                  ? "text-brand-700 opacity-100"
+                  : "text-subtext-color opacity-0 group-hover:opacity-100"
+              }`}
+            >
+              {s.label}
+            </span>
+            <span
+              className={`h-2.5 w-2.5 flex-none rounded-full border transition-all ${
+                isActive
+                  ? "scale-125 border-brand-600 bg-brand-600"
+                  : "border-neutral-300 bg-neutral-200 group-hover:border-brand-400 group-hover:bg-brand-300"
+              }`}
+            />
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
 function ImmersiveGradientHero() {
+  const [menuOpen, setMenuOpen] = React.useState(false);
   return (
     <div className="flex h-full w-full flex-col items-center bg-default-background">
       <nav className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-solid border-neutral-100 bg-default-background/95 px-8 py-4 shadow-sm backdrop-blur-md mobile:px-4">
@@ -204,17 +283,9 @@ function ImmersiveGradientHero() {
               alt="Magpie"
             />
           </a>
-          <div className="flex items-center gap-7 mobile:hidden">
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#why-magpie">Why Magpie?</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#maintainer-first">Maintainers first</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#agentic-automations">Agentic automations</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#skill-families">Skill Families</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#privacy-security">Privacy &amp; Security</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#vendor-neutrality">Vendor Neutrality</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#organisation-agnostic">Organisations</a>
-            <a className="text-body font-body text-brand-600 hover:text-brand-700" href="#community">Community</a>
+          <div className="flex items-center gap-2">
             <a
-              className="inline-flex items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100"
+              className="hidden items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100 lg:inline-flex"
               href={withBase("/skills")}
               target="_blank"
               rel="noreferrer"
@@ -224,7 +295,7 @@ function ImmersiveGradientHero() {
               <ArrowUpRight className="size-3.5" />
             </a>
             <a
-              className="inline-flex items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100"
+              className="hidden items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100 lg:inline-flex"
               href={withBase("/tools")}
               target="_blank"
               rel="noreferrer"
@@ -233,27 +304,64 @@ function ImmersiveGradientHero() {
               Tools
               <ArrowUpRight className="size-3.5" />
             </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <a href="https://github.com/apache/magpie" target="_blank" rel="noreferrer" className="mobile:hidden">
-              <Button
-                className="border border-white/20 bg-white/10 text-white hover:bg-white/20"
-                variant="neutral-secondary"
-                icon={<Github />}
-              >
-                Star on GitHub
-              </Button>
+            <a
+              href="https://github.com/apache/magpie"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Star Apache Magpie on GitHub"
+              title="Star Apache Magpie on GitHub"
+            >
+              <IconButton icon={<Github />} aria-label="Star Apache Magpie on GitHub" />
             </a>
             <a href={withBase("/skills")}>
               <Button icon={<ArrowRight />}>Get Started</Button>
             </a>
             <IconButton
-              className="hidden text-white mobile:flex"
+              className="lg:hidden"
               icon={<Menu />}
-              aria-label="Open menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
             />
           </div>
+          {menuOpen && (
+            <div className="absolute inset-x-0 top-full z-50 flex flex-col gap-1 border-b border-solid border-neutral-100 bg-default-background px-6 py-4 shadow-md lg:hidden">
+              {SECTIONS.map((s) => (
+                <a
+                  key={s.id}
+                  className="rounded-md px-2 py-2 text-body font-body text-brand-600 hover:bg-brand-50 hover:text-brand-700"
+                  href={`#${s.id}`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {s.label}
+                </a>
+              ))}
+              <div className="mt-1 flex flex-wrap gap-2 border-t border-solid border-neutral-100 pt-3">
+                <a
+                  className="inline-flex items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1.5 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100"
+                  href={withBase("/skills")}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Skills
+                  <ArrowUpRight className="size-3.5" />
+                </a>
+                <a
+                  className="inline-flex items-center gap-1.5 rounded-md border border-solid border-brand-200 bg-brand-50 px-3 py-1.5 text-body-bold font-body-bold text-brand-700 hover:border-brand-300 hover:bg-brand-100"
+                  href={withBase("/tools")}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Tools
+                  <ArrowUpRight className="size-3.5" />
+                </a>
+              </div>
+            </div>
+          )}
       </nav>
+      <SectionNav />
       <div className="relative flex w-full flex-col items-center bg-gradient-to-b from-brand-900 via-brand-800 to-brand-600 overflow-hidden">
         <Particles
           className="absolute inset-0 pointer-events-none"
