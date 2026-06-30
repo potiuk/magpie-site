@@ -172,3 +172,6 @@
 }
 
 @custom-variant mobile (@media (max-width: 767px));
+/* Very narrow phones: used to drop non-essential bits (e.g. status badges in
+   the hero flow card) that would otherwise overflow their row. */
+@custom-variant xnarrow (@media (max-width: 480px));
