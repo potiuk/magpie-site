@@ -476,7 +476,7 @@ function ImmersiveGradientHero() {
                       Contributor opens a pull request
                     </span>
                   </div>
-                  <Badge variant="success" icon={<Check />}>
+                  <Badge variant="success" icon={<Check />} className="xnarrow:hidden">
                     Done
                   </Badge>
                 </a>
@@ -503,7 +503,7 @@ function ImmersiveGradientHero() {
                       Auto-label, categorize &amp; prioritize
                     </span>
                   </div>
-                  <Badge variant="success" icon={<Check />}>
+                  <Badge variant="success" icon={<Check />} className="xnarrow:hidden">
                     Stable
                   </Badge>
                 </a>
@@ -530,7 +530,7 @@ function ImmersiveGradientHero() {
                       Guide contributors with feedback
                     </span>
                   </div>
-                  <Badge variant="warning" icon={<Clock />}>
+                  <Badge variant="warning" icon={<Clock />} className="xnarrow:hidden">
                     Experimental
                   </Badge>
                 </a>
@@ -557,7 +557,7 @@ function ImmersiveGradientHero() {
                       Generate review comments &amp; notes
                     </span>
                   </div>
-                  <Badge variant="success" icon={<Check />}>
+                  <Badge variant="success" icon={<Check />} className="xnarrow:hidden">
                     Stable
                   </Badge>
                 </a>
@@ -585,7 +585,7 @@ function ImmersiveGradientHero() {
                       Off by design until earlier modes prove out
                     </span>
                   </div>
-                  <Badge variant="neutral" icon={<Lock />}>
+                  <Badge variant="neutral" icon={<Lock />} className="xnarrow:hidden">
                     Off
                   </Badge>
                 </a>
