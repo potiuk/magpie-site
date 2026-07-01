@@ -461,7 +461,7 @@ function ImmersiveGradientHero() {
               <div className="flex items-center gap-2">
                 <CheckCircle className="text-body font-body text-brand-200" />
                 <span className="text-caption font-caption text-brand-200">
-                  Vendor neutral
+                  <a href="#vendor-neutrality">Vendor neutral</a>
                 </span>
               </div>
               <div className="flex items-center gap-2">
