@@ -15,12 +15,14 @@ import community from "@/data/community.json";
 import {
   Activity,
   ArrowDown,
+  ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   BookOpen,
   Check,
   CheckCircle,
   Clock,
+  Copy,
   Download,
   EyeOff,
   FileText,
@@ -220,33 +222,202 @@ const skillCountLabel = (family: { name: string; status?: string }) => {
 
 // The maintainer-education stream (PRINCIPLE 18): every release ships the
 // learning material for its skills. The full pages live in the docs under
-// /docs/education — the landing only summarises what the stream is and links in.
-const EDUCATION = [
+// /docs/education — the landing only summarises the stream and links in.
+// Rendered as a progression graph: EDUCATION_STEPS is the ordered nine-step
+// learning path (same order as docs/education/README.md), and EDUCATION_BRANCHES
+// are the two hands-on references that branch off it rather than sitting on it.
+const EDUCATION_STEPS = [
+  { n: 1, icon: BookOpen, title: "What agents are", href: "/docs/education/what-agents-are" },
+  { n: 2, icon: Users, title: "Working with agents", href: "/docs/education/working-with-agents" },
+  { n: 3, icon: Layers, title: "Choosing models", href: "/docs/education/choosing-models" },
+  { n: 4, icon: PenTool, title: "Your first skill", href: "/docs/education/your-first-skill" },
+  { n: 5, icon: Shield, title: "Writing safe skills", href: "/docs/education/writing-safe-skills" },
+  { n: 6, icon: Activity, title: "Eval-driven development", href: "/docs/education/eval-driven-development" },
+  { n: 7, icon: GitMerge, title: "Agentic & autonomous work", href: "/docs/education/agentic-work" },
+  { n: 8, icon: Globe, title: "English as code", href: "/docs/education/english-as-code" },
+  { n: 9, icon: GitPullRequest, title: "Contributing back", href: "/docs/education/contributing" },
+];
+
+// Two hands-on references that branch off the main path — you dip into them
+// while working the steps rather than reading them in sequence. `align` drops
+// each one from an end of the spine (pattern catalogue at the start, tutorials
+// at the end) so they read as spin-offs of the progression graph.
+const EDUCATION_BRANCHES = [
   {
-    icon: PenTool,
-    title: "Your first skill",
-    desc: "A step-by-step path from zero to a merged skill — the gentle on-ramp for maintainers new to building with agents.",
-    href: "/docs/education/your-first-skill",
-  },
-  {
-    icon: Layers,
+    icon: FileText,
     title: "Pattern catalogue",
-    desc: "Ready-to-copy skill and prompt examples, each with notes on what worked, what didn't, and why.",
+    desc: "Ready-to-copy skill, prompt, and tool-use patterns, each with notes on what worked and what didn't.",
     href: "/docs/education/pattern-catalogue",
+    align: "start" as const,
   },
   {
-    icon: Activity,
-    title: "Eval-driven development",
-    desc: "How to judge whether an agent's answers are good enough when the same input can give different results each time.",
-    href: "/docs/education/eval-driven-development",
-  },
-  {
-    icon: Users,
-    title: "Workshops",
+    icon: Clock,
+    title: "Tutorials",
     desc: "A hands-on lab: build a small skill, give it an eval suite, and run it — in about 90 minutes.",
-    href: "/docs/education/workshops",
+    href: "/docs/education/tutorials",
+    align: "end" as const,
   },
 ];
+
+// One compact node on the education progression snake. `className` sets the
+// width (fixed on the desktop snake for clean columns; full-width on mobile).
+function StepNode({
+  step,
+  className = "",
+}: {
+  step: (typeof EDUCATION_STEPS)[number];
+  className?: string;
+}) {
+  const Icon = step.icon;
+  return (
+    <a
+      href={withBase(step.href)}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Step ${step.n}: ${step.title}`}
+      className={`group flex items-center gap-2 rounded-xl border border-solid border-neutral-200 bg-default-background px-3 py-2.5 shadow-sm transition-all hover:border-brand-300 hover:shadow-md ${className}`}
+    >
+      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand-600 font-['Inter'] text-[12px] font-[700] leading-none text-white">
+        {step.n}
+      </span>
+      <Icon className="size-4 flex-none text-brand-700" />
+      <span className="truncate text-caption-bold font-caption-bold text-default-font group-hover:text-brand-700">
+        {step.title}
+      </span>
+    </a>
+  );
+}
+
+// A hands-on reference card that spins off the snake.
+function BranchCard({ branch }: { branch: (typeof EDUCATION_BRANCHES)[number] }) {
+  const Icon = branch.icon;
+  return (
+    <a
+      href={withBase(branch.href)}
+      target="_blank"
+      rel="noreferrer"
+      className="group flex w-full max-w-[300px] flex-col items-start gap-2 rounded-2xl border border-dashed border-brand-300 bg-brand-50/60 px-4 py-4 shadow-sm transition-all hover:border-brand-500 hover:bg-brand-50 hover:shadow-md"
+    >
+      <div className="flex w-full items-center justify-between">
+        <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-brand-100">
+          <Icon className="text-body-bold font-body-bold text-brand-700" />
+        </div>
+        <span className="inline-flex items-center rounded-full border border-solid border-brand-200 bg-white px-2 py-0.5 text-caption font-caption text-brand-600">
+          Reference
+        </span>
+      </div>
+      <span className="text-body-bold font-body-bold text-default-font group-hover:text-brand-700">
+        {branch.title}
+      </span>
+      <span className="text-caption font-caption text-subtext-color">
+        {branch.desc}
+      </span>
+      <span className="mt-auto inline-flex items-center gap-1 pt-1 text-caption font-caption text-brand-700">
+        Learn more
+        <ArrowUpRight className="size-3.5" />
+      </span>
+    </a>
+  );
+}
+
+// The framework publishes a shields.io endpoint config at
+// apache/magpie:assets/badge.json (on `main`). Adopters drop the snippet below
+// into their README to show their project runs on Magpie. We render the on-page
+// preview from local assets (below) rather than hitting shields.io on load, but
+// the copy-snippet uses the live shields.io URL so an adopter's README stays in
+// sync with any framework rebrand.
+const BADGE_IMG =
+  "https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/apache/magpie/main/assets/badge.json";
+const BADGE_MARKDOWN = `[![Magpie](${BADGE_IMG})](https://magpie.apache.org/)`;
+
+// Self-contained preview of that badge — the local Magpie mark masked to white
+// on the brand-blue pill, matching the shields.io render but with no
+// third-party request. `withBase` keeps the mask URL correct under a base path.
+function MagpieBadge({ className = "" }: { className?: string }) {
+  const maskUrl = `url(${withBase("/subframe-mark.svg")})`;
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-[4px] bg-[#004aae] px-2.5 py-1.5 ${className}`}
+    >
+      <span
+        aria-hidden="true"
+        className="h-3.5 w-3.5 flex-none bg-white"
+        style={{
+          maskImage: maskUrl,
+          WebkitMaskImage: maskUrl,
+          maskSize: "contain",
+          WebkitMaskSize: "contain",
+          maskRepeat: "no-repeat",
+          WebkitMaskRepeat: "no-repeat",
+          maskPosition: "center",
+          WebkitMaskPosition: "center",
+        }}
+      />
+      <span className="font-['Inter'] text-[13px] font-[600] leading-none text-white">
+        Magpie
+      </span>
+    </span>
+  );
+}
+
+// "Get a badge" footer for the Why-Magpie section: shows the badge and a
+// one-click-copy of the README snippet (an example of linking via shields.io).
+function GetABadge() {
+  const [copied, setCopied] = React.useState(false);
+  const copy = () => {
+    navigator.clipboard?.writeText(BADGE_MARKDOWN).then(
+      () => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 2000);
+      },
+      () => {},
+    );
+  };
+  return (
+    <div className="mt-16 flex w-full max-w-[760px] flex-col items-center gap-4 border-t border-solid border-neutral-200 pt-10 mobile:mt-10">
+      <div className="flex flex-col items-center gap-1.5">
+        <span className="text-heading-3 font-heading-3 text-default-font">
+          Get a badge
+        </span>
+        <span className="text-body font-body text-subtext-color text-center">
+          Running Magpie in your project? Wear it. Add the badge to your README
+          so visitors know your maintenance runs on Magpie.
+        </span>
+      </div>
+      <MagpieBadge />
+      <div className="flex w-full flex-col items-start gap-1">
+      <span className="text-caption font-caption text-subtext-color">
+        Markdown — links through{" "}
+        <span className="font-mono">img.shields.io</span> so it always shows the
+        current badge:
+      </span>
+      <div className="flex w-full items-center gap-2 rounded-lg border border-solid border-neutral-200 bg-neutral-50 px-3 py-2">
+        <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-caption text-subtext-color">
+          {BADGE_MARKDOWN}
+        </code>
+        <button
+          type="button"
+          onClick={copy}
+          aria-label="Copy the badge markdown"
+          className="inline-flex flex-none items-center gap-1 rounded-md border border-solid border-brand-200 bg-brand-50 px-2.5 py-1 text-caption font-caption text-brand-700 hover:border-brand-300 hover:bg-brand-100"
+        >
+          {copied ? (
+            <>
+              <Check className="size-3.5" />
+              Copied
+            </>
+          ) : (
+            <>
+              <Copy className="size-3.5" />
+              Copy
+            </>
+          )}
+        </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // In-page sections, in document order. Drives both the floating scroll-spy
 // SectionNav (desktop) and the collapsible menu (smaller screens). Keep the
@@ -681,7 +852,7 @@ function ImmersiveGradientHero() {
         </div>
       </div>
       <div className="flex h-24 w-full flex-none items-start bg-gradient-to-b from-brand-600 to-brand-50" />
-      <div id="why-magpie" className="flex w-full flex-col items-center bg-default-background px-8 pt-20 pb-4 mobile:px-4 mobile:pt-12">
+      <div id="why-magpie" className="flex w-full flex-col items-center bg-default-background px-8 pt-20 pb-16 mobile:px-4 mobile:pt-12">
         <BlurFade inView className="flex flex-col items-center gap-4 max-w-[660px] pb-12 mobile:pb-8">
           <span className="font-['Inter'] text-[38px] font-[700] leading-[44px] text-default-font text-center -tracking-[0.035em] mobile:font-['Jost'] mobile:text-[28px] mobile:font-[400] mobile:leading-[34px] mobile:tracking-normal">
             Why would you like to use Magpie?
@@ -710,6 +881,7 @@ function ImmersiveGradientHero() {
             </a>
           ))}
         </div>
+        <GetABadge />
       </div>
       <div id="maintainer-first" className="flex w-full flex-col items-center bg-warning-50 px-8 py-24 mobile:px-4 mobile:py-14">
         <BlurFade inView className="flex flex-col items-center gap-4 max-w-[640px] pb-12 mobile:pb-8">
@@ -1061,39 +1233,93 @@ function ImmersiveGradientHero() {
           </span>
           <span className="text-body font-body text-subtext-color text-center">
             Magpie&apos;s maintainer-education stream teaches you that craft one
-            page at a time — no AI background needed. Every release ships the
-            learning material for the skills it contains
+            page at a time — no AI background needed. Follow the nine-step path in
+            order; two hands-on references sit alongside it. Every release ships
+            the learning material for the skills it contains
             (<a className="text-brand-700 hover:text-brand-800 underline" href={withBase("/docs/principles")} target="_blank" rel="noreferrer">PRINCIPLE 18</a>).
-            The full guides live in the docs; here&apos;s what you&apos;ll find.
           </span>
         </BlurFade>
-        <div className="w-full items-stretch gap-4 grid grid-cols-4 auto-rows-fr max-w-[1100px] mobile:grid-cols-1">
-          {EDUCATION.map((page) => {
-            const Icon = page.icon;
-            return (
-              <a
-                key={page.title}
-                href={withBase(page.href)}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex h-full flex-col items-start gap-3 rounded-2xl border border-solid border-neutral-200 bg-default-background px-5 py-5 shadow-sm hover:border-brand-200 hover:shadow-md transition-all"
-              >
-                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-100">
-                  <Icon className="text-body-bold font-body-bold text-brand-700" />
-                </div>
-                <span className="text-body-bold font-body-bold text-default-font">
-                  {page.title}
-                </span>
-                <span className="text-caption font-caption text-subtext-color">
-                  {page.desc}
-                </span>
-                <span className="mt-auto inline-flex items-center gap-1 self-start rounded-md border border-solid border-brand-200 bg-brand-50 px-2.5 py-1 text-caption font-caption text-brand-700 group-hover:border-brand-300 group-hover:bg-brand-100">
-                  Read the guide
-                  <ArrowUpRight className="size-3.5" />
-                </span>
-              </a>
-            );
-          })}
+        {/* Progression snake, boustrophedon in three rows of three: steps 1–3
+            run left→right, the arrow U-turns down on the right into steps 4–6
+            (right→left), U-turns down again on the left into steps 7–9
+            (left→right). Fixed-width nodes keep the three columns aligned so the
+            turns are clean verticals. Below it sit the two hands-on references
+            as their own boxes. Mobile falls back to a plain top→bottom stack. */}
+        <div className="flex w-full flex-col items-center">
+          {/* Desktop 3×3 snake. The path drops on the right after row 1 and on
+              the left after row 2 (a vertical connector on the outer column);
+              the two references sit centred in those gaps. Connector offset is
+              half the 252px node width so it aligns to the outer column. */}
+          <div className="flex w-fit flex-col mobile:hidden">
+            {/* Row 1: 1 → 2 → 3 */}
+            <div className="flex items-stretch gap-2">
+              {EDUCATION_STEPS.slice(0, 3).map((step, i, row) => (
+                <React.Fragment key={step.title}>
+                  <StepNode step={step} className="w-[252px]" />
+                  {i < row.length - 1 && (
+                    <ArrowRight className="size-4 flex-none self-center text-brand-300" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+            {/* Gap 1→2: path drops on the right, Pattern catalogue centred */}
+            <div className="relative flex justify-center py-5">
+              <div className="pointer-events-none absolute inset-y-0 right-[126px] flex flex-col items-center">
+                <span className="w-0.5 flex-1 bg-brand-200" />
+                <ArrowDown className="-mt-1 size-4 flex-none text-brand-400" />
+              </div>
+              <BranchCard branch={EDUCATION_BRANCHES[0]} />
+            </div>
+            {/* Row 2: 6 ← 5 ← 4 (runs right→left, so 4 sits under 3) */}
+            <div className="flex items-stretch gap-2">
+              {[EDUCATION_STEPS[5], EDUCATION_STEPS[4], EDUCATION_STEPS[3]].map(
+                (step, i, row) => (
+                  <React.Fragment key={step.title}>
+                    <StepNode step={step} className="w-[252px]" />
+                    {i < row.length - 1 && (
+                      <ArrowLeft className="size-4 flex-none self-center text-brand-300" />
+                    )}
+                  </React.Fragment>
+                ),
+              )}
+            </div>
+            {/* Gap 2→3: path drops on the left, Tutorials centred */}
+            <div className="relative flex justify-center py-5">
+              <div className="pointer-events-none absolute inset-y-0 left-[126px] flex flex-col items-center">
+                <span className="w-0.5 flex-1 bg-brand-200" />
+                <ArrowDown className="-mt-1 size-4 flex-none text-brand-400" />
+              </div>
+              <BranchCard branch={EDUCATION_BRANCHES[1]} />
+            </div>
+            {/* Row 3: 7 → 8 → 9 */}
+            <div className="flex items-stretch gap-2">
+              {EDUCATION_STEPS.slice(6, 9).map((step, i, row) => (
+                <React.Fragment key={step.title}>
+                  <StepNode step={step} className="w-[252px]" />
+                  {i < row.length - 1 && (
+                    <ArrowRight className="size-4 flex-none self-center text-brand-300" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          {/* Mobile: a plain vertical stack of all nine steps, with each
+              reference dropped in at the same row boundary as on desktop */}
+          <div className="hidden w-full flex-col items-stretch mobile:flex">
+            {EDUCATION_STEPS.map((step, i) => (
+              <React.Fragment key={step.title}>
+                <StepNode step={step} className="w-full" />
+                {(i === 2 || i === 5) && (
+                  <div className="my-2">
+                    <BranchCard branch={EDUCATION_BRANCHES[i === 2 ? 0 : 1]} />
+                  </div>
+                )}
+                {i < EDUCATION_STEPS.length - 1 && (
+                  <ArrowDown className="my-1 size-4 self-center text-brand-300" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
         <a href={withBase("/docs/education/readme")} target="_blank" rel="noreferrer" className="mt-10">
           <Button

@@ -49,7 +49,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/agent-guard"
     },
@@ -115,9 +115,30 @@
       "organization": "ASF",
       "mcp": null,
       "hasCode": false,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/asf-svn"
+    },
+    {
+      "name": "bitbucket",
+      "title": "Bitbucket forge bridge",
+      "description": "Bitbucket Cloud and Bitbucket Data Center bridge for Magpie adopters that use Bitbucket as a forge, pull-request review surface, or Jira-paired Atlassian backend.",
+      "labels": [
+        {
+          "kind": "contract",
+          "name": "change-request"
+        }
+      ],
+      "kind": "contract",
+      "vendorKind": "implementation",
+      "vendor": "Atlassian",
+      "harness": null,
+      "organization": null,
+      "mcp": null,
+      "hasCode": true,
+      "maturity": "experimental",
+      "state": "implemented",
+      "docUrl": "https://github.com/apache/magpie/tree/main/tools/bitbucket"
     },
     {
       "name": "change-request",
@@ -136,7 +157,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": false,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/change-request"
     },
@@ -262,7 +283,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/egress-gateway"
     },
@@ -286,6 +307,31 @@
       "maturity": "stable",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/forwarder-relay"
+    },
+    {
+      "name": "fossil",
+      "title": "Fossil Forge Bridge",
+      "description": "Fossil SCM forge and tracker bridge implementation for the Apache Magpie framework. It integrates version-control checks, ticket tracking, wiki reads, and forum thread reads.",
+      "labels": [
+        {
+          "kind": "contract",
+          "name": "tracker"
+        },
+        {
+          "kind": "contract",
+          "name": "source-control"
+        }
+      ],
+      "kind": "contract",
+      "vendorKind": "implementation",
+      "vendor": "Fossil",
+      "harness": null,
+      "organization": null,
+      "mcp": null,
+      "hasCode": true,
+      "maturity": null,
+      "state": "implemented",
+      "docUrl": "https://github.com/apache/magpie/tree/main/tools/fossil"
     },
     {
       "name": "github",
@@ -336,7 +382,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/github-body-field"
     },
@@ -357,7 +403,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/github-rollup"
     },
@@ -431,7 +477,7 @@
       "organization": "ASF",
       "mcp": null,
       "hasCode": false,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/jira-patch"
     },
@@ -452,7 +498,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": false,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/mail-archive"
     },
@@ -473,7 +519,7 @@
       "organization": "ASF",
       "mcp": null,
       "hasCode": false,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "adapter",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/mail-patch"
     },
@@ -519,7 +565,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/maildir"
     },
@@ -540,7 +586,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/permission-audit"
     },
@@ -561,7 +607,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/pilot-report-validator"
     },
@@ -581,7 +627,7 @@
       ],
       "kind": "contract",
       "vendorKind": "implementation",
-      "vendor": "PonyMail",
+      "vendor": "ASF",
       "harness": null,
       "organization": "ASF",
       "mcp": {
@@ -631,7 +677,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/preflight-audit"
     },
@@ -783,6 +829,27 @@
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/skill-evals"
     },
     {
+      "name": "skill-reconciler-diff",
+      "title": "skill-reconciler-diff",
+      "description": "A deterministic uv tool that parses two SKILL.md skill trees into normalised structural representations and emits a JSON diff. The output grounds the skill-reconciler skill's ALLOWED / DRIFT / SAFETY-BASELINE classification decisions in…",
+      "labels": [
+        {
+          "kind": "substrate",
+          "name": "framework-dev"
+        }
+      ],
+      "kind": "substrate",
+      "vendorKind": null,
+      "vendor": null,
+      "harness": "agnostic",
+      "organization": null,
+      "mcp": null,
+      "hasCode": true,
+      "maturity": "experimental",
+      "state": "implemented",
+      "docUrl": "https://github.com/apache/magpie/tree/main/tools/skill-reconciler-diff"
+    },
+    {
       "name": "sourcehut",
       "title": "SourceHut (sr.ht) Forge Bridge",
       "description": "SourceHut (sr.ht) forge bridge implementation for the Apache Magpie framework. It integrates ticket tracking (todo.sr.ht), mailing list patchset review (lists.sr.ht), CI builds (builds.sr.ht), and repository reads (git.sr.ht & hg.sr.ht)…",
@@ -807,7 +874,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/sourcehut"
     },
@@ -941,7 +1008,7 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "experimental",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/vcs"
     },
@@ -966,15 +1033,15 @@
       "organization": null,
       "mcp": null,
       "hasCode": true,
-      "maturity": null,
+      "maturity": "stable",
       "state": "implemented",
       "docUrl": "https://github.com/apache/magpie/tree/main/tools/vendor-neutrality-score"
     }
   ],
-  "toolsTotal": 42,
-  "implementedTotal": 21,
-  "contractsTotal": 21,
-  "substratesTotal": 21,
+  "toolsTotal": 45,
+  "implementedTotal": 24,
+  "contractsTotal": 23,
+  "substratesTotal": 22,
   "mcpTotal": 4,
   "organizations": [
     {
@@ -1024,9 +1091,10 @@
         "contract": "contract:tracker",
         "class": "vendor-backed",
         "green": true,
-        "basis": "3 backend vendors: Atlassian, GitHub, SourceHut",
+        "basis": "4 backend vendors: Atlassian, Fossil, GitHub, SourceHut",
         "vendors": [
           "Atlassian",
+          "Fossil",
           "GitHub",
           "SourceHut"
         ],
@@ -1035,6 +1103,10 @@
           {
             "tool": "jira",
             "vendor": "Atlassian"
+          },
+          {
+            "tool": "fossil",
+            "vendor": "Fossil"
           },
           {
             "tool": "github",
@@ -1058,8 +1130,9 @@
         "contract": "contract:source-control",
         "class": "vendor-backed",
         "green": true,
-        "basis": "4 backend vendors: Git, GitHub, SourceHut, Subversion",
+        "basis": "5 backend vendors: Fossil, Git, GitHub, SourceHut, Subversion",
         "vendors": [
+          "Fossil",
           "Git",
           "GitHub",
           "SourceHut",
@@ -1067,6 +1140,10 @@
         ],
         "interfaces": [],
         "implementations": [
+          {
+            "tool": "fossil",
+            "vendor": "Fossil"
+          },
           {
             "tool": "vcs",
             "vendor": "Git"
@@ -1100,6 +1177,10 @@
         ],
         "implementations": [
           {
+            "tool": "bitbucket",
+            "vendor": "Atlassian"
+          },
+          {
             "tool": "jira-patch",
             "vendor": "Atlassian"
           },
@@ -1117,10 +1198,10 @@
         "contract": "contract:mail-archive",
         "class": "vendor-backed",
         "green": true,
-        "basis": "3 backend vendors: Google, PonyMail, SourceHut",
+        "basis": "3 backend vendors: ASF, Google, SourceHut",
         "vendors": [
+          "ASF",
           "Google",
-          "PonyMail",
           "SourceHut"
         ],
         "interfaces": [
@@ -1128,12 +1209,12 @@
         ],
         "implementations": [
           {
-            "tool": "gmail",
-            "vendor": "Google"
+            "tool": "ponymail",
+            "vendor": "ASF"
           },
           {
-            "tool": "ponymail",
-            "vendor": "PonyMail"
+            "tool": "gmail",
+            "vendor": "Google"
           },
           {
             "tool": "sourcehut",
@@ -1145,16 +1226,20 @@
         "contract": "contract:mail-source",
         "class": "vendor-backed",
         "green": true,
-        "basis": "3 backend vendors: Google, Maildir, PonyMail",
+        "basis": "3 backend vendors: ASF, Google, Maildir",
         "vendors": [
+          "ASF",
           "Google",
-          "Maildir",
-          "PonyMail"
+          "Maildir"
         ],
         "interfaces": [
           "mail-source"
         ],
         "implementations": [
+          {
+            "tool": "ponymail",
+            "vendor": "ASF"
+          },
           {
             "tool": "gmail",
             "vendor": "Google"
@@ -1162,10 +1247,6 @@
           {
             "tool": "maildir",
             "vendor": "Maildir"
-          },
-          {
-            "tool": "ponymail",
-            "vendor": "PonyMail"
           }
         ]
       },
@@ -1253,8 +1334,8 @@
       }
     ],
     "harness": {
-      "neutral": 21,
-      "total": 21,
+      "neutral": 22,
+      "total": 22,
       "percent": 100,
       "tools": [
         {
@@ -1390,6 +1471,14 @@
           "verdict": "agnostic"
         },
         {
+          "tool": "skill-reconciler-diff",
+          "substrates": [
+            "substrate:framework-dev"
+          ],
+          "harnesses": [],
+          "verdict": "agnostic"
+        },
+        {
           "tool": "spec-inventory",
           "substrates": [
             "substrate:framework-dev",
@@ -1474,6 +1563,7 @@
           "security-tracker-stats-dashboard",
           "skill-and-tool-validator",
           "skill-evals",
+          "skill-reconciler-diff",
           "spec-inventory",
           "spec-status-index",
           "spec-validator",
@@ -1513,15 +1603,15 @@
       "optIn": "adopter-declared in <project-config>/privacy-llm.md (no fixed list)"
     },
     "skills": {
-      "total": 63,
-      "neutral": 63,
+      "total": 69,
+      "neutral": 69,
       "byVerdict": {
-        "capability-pure": 9,
-        "portable": 54,
+        "capability-pure": 10,
+        "portable": 59,
         "vendor-coupled": 0
       },
       "byOrg": {
-        "agnostic": 49,
+        "agnostic": 55,
         "ASF": 14
       },
       "coupled": [],
@@ -1568,6 +1658,15 @@
           "organization": "ASF",
           "contractsUsed": [
             "contract:project-metadata",
+            "contract:tracker"
+          ],
+          "coupled": []
+        },
+        {
+          "skill": "contributor-sentiment",
+          "verdict": "portable",
+          "organization": "agnostic",
+          "contractsUsed": [
             "contract:tracker"
           ],
           "coupled": []
@@ -1712,6 +1811,22 @@
           "coupled": []
         },
         {
+          "skill": "newcomer-issue-explainer",
+          "verdict": "portable",
+          "organization": "agnostic",
+          "contractsUsed": [
+            "contract:tracker"
+          ],
+          "coupled": []
+        },
+        {
+          "skill": "onboarding-concierge",
+          "verdict": "capability-pure",
+          "organization": "agnostic",
+          "contractsUsed": [],
+          "coupled": []
+        },
+        {
           "skill": "optimize-skill",
           "verdict": "capability-pure",
           "organization": "agnostic",
@@ -1780,6 +1895,24 @@
           "contractsUsed": [
             "contract:change-request",
             "contract:tracker"
+          ],
+          "coupled": []
+        },
+        {
+          "skill": "pr-stale-sweep",
+          "verdict": "portable",
+          "organization": "agnostic",
+          "contractsUsed": [
+            "contract:change-request"
+          ],
+          "coupled": []
+        },
+        {
+          "skill": "pre-first-pr-check",
+          "verdict": "portable",
+          "organization": "agnostic",
+          "contractsUsed": [
+            "contract:source-control"
           ],
           "coupled": []
         },
@@ -2083,6 +2216,17 @@
           "coupled": []
         },
         {
+          "skill": "setup-upstream-fix",
+          "verdict": "portable",
+          "organization": "agnostic",
+          "contractsUsed": [
+            "contract:change-request",
+            "contract:source-control",
+            "contract:tracker"
+          ],
+          "coupled": []
+        },
+        {
           "skill": "skill-reconciler",
           "verdict": "capability-pure",
           "organization": "agnostic",
@@ -2111,8 +2255,8 @@
     }
   },
   "skills": {
-    "total": 63,
-    "apacheLicensed": 63,
+    "total": 69,
+    "apacheLicensed": 69,
     "allApache": true,
     "license": "Apache-2.0",
     "byOrg": {
