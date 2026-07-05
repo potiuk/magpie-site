@@ -21,7 +21,7 @@ const firstH1 = (body: string | undefined): string | null => {
 };
 
 type DocItem = { slug: string; label: string; description?: string };
-type Group = { items: DocItem[]; overview?: string };
+type Group = { items: DocItem[]; overview?: string; overviewBody?: string };
 const groups = new Map<string, Group>();
 for (const entry of all) {
   const parts = entry.id.split("/");
@@ -37,8 +37,11 @@ for (const entry of all) {
   const group = groups.get(key)!;
 
   if (isGroupOverview) {
-    // Hoist the overview onto the section heading instead of listing it.
+    // Hoist the overview onto the section heading instead of listing it, and
+    // keep its body so we can order the section's pages the way the overview
+    // (the section's own README/table of contents) presents them.
     group.overview = slug;
+    group.overviewBody = entry.body;
     continue;
   }
 
@@ -63,7 +66,7 @@ const GROUP_META: Record<string, { name: string; blurb: string }> = {
   education: {
     name: "Education",
     blurb:
-      "The maintainer-education stream — learn to build and run agents for your project: your first skill, a pattern catalogue, eval-driven development, and a hands-on workshop.",
+      "The maintainer-education stream — a step-by-step path to building and running agents for your project: what agents are, working with them, writing and evaluating your first skill, English as code, and contributing back, plus a pattern catalogue and hands-on tutorials.",
   },
   setup: {
     name: "Setup",
@@ -144,6 +147,18 @@ const ORDER = [
   "rfcs",
 ];
 
+// Position of a page within its section's overview: the character offset of the
+// first link to that page in the overview README (which, via its "what you can
+// learn" table / table of contents, lists pages in the intended reading order).
+// Pages the overview doesn't link get -1 and fall back to alphabetical, after
+// the linked ones. The negative-lookahead stops a slug matching a longer one
+// (e.g. `.../agentic-work` must not match `.../agentic-work-plus`).
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const overviewOrder = (body: string | undefined, slug: string): number => {
+  if (!body) return -1;
+  return body.search(new RegExp(`docs/${escapeRe(slug)}(?![\\w-])`));
+};
+
 const sortedGroups = Array.from(groups.entries())
   .map(([key, group]) => ({
     key,
@@ -154,7 +169,18 @@ const sortedGroups = Array.from(groups.entries())
       blurb: "",
     },
     overview: group.overview,
-    items: group.items.sort((a, b) => a.label.localeCompare(b.label)),
+    items: group.items
+      .map((item) => ({
+        ...item,
+        order: overviewOrder(group.overviewBody, item.slug),
+      }))
+      .sort((a, b) => {
+        // README reading order first; unlinked pages (order -1) sort last,
+        // alphabetically among themselves — the previous default everywhere.
+        const an = a.order === -1 ? Infinity : a.order;
+        const bn = b.order === -1 ? Infinity : b.order;
+        return an - bn || a.label.localeCompare(b.label);
+      }),
   }))
   .sort((a, b) => {
     const ai = ORDER.indexOf(a.key);
