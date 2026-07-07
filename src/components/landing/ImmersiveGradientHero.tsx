@@ -15,7 +15,6 @@ import community from "@/data/community.json";
 import {
   Activity,
   ArrowDown,
-  ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   BookOpen,
@@ -32,11 +31,14 @@ import {
   Globe,
   Heart,
   Key,
+  Library,
   Mail,
   Layers,
   Lock,
   Menu,
+  MessageSquare,
   PenTool,
+  Rocket,
   Shield,
   Users,
 } from "lucide-react";
@@ -223,99 +225,120 @@ const skillCountLabel = (family: { name: string; status?: string }) => {
 // The maintainer-education stream (PRINCIPLE 18): every release ships the
 // learning material for its skills. The full pages live in the docs under
 // /docs/education — the landing only summarises the stream and links in.
-// Rendered as a progression graph: EDUCATION_STEPS is the ordered nine-step
-// learning path (same order as docs/education/README.md), and EDUCATION_BRANCHES
-// are the two hands-on references that branch off it rather than sitting on it.
-const EDUCATION_STEPS = [
-  { n: 1, icon: BookOpen, title: "What agents are", href: "/docs/education/what-agents-are" },
-  { n: 2, icon: Users, title: "Working with agents", href: "/docs/education/working-with-agents" },
-  { n: 3, icon: Layers, title: "Choosing models", href: "/docs/education/choosing-models" },
-  { n: 4, icon: PenTool, title: "Your first skill", href: "/docs/education/your-first-skill" },
-  { n: 5, icon: Shield, title: "Writing safe skills", href: "/docs/education/writing-safe-skills" },
-  { n: 6, icon: Activity, title: "Eval-driven development", href: "/docs/education/eval-driven-development" },
-  { n: 7, icon: GitMerge, title: "Agentic & autonomous work", href: "/docs/education/agentic-work" },
-  { n: 8, icon: Globe, title: "English as code", href: "/docs/education/english-as-code" },
-  { n: 9, icon: GitPullRequest, title: "Contributing back", href: "/docs/education/contributing" },
+// The eleven-page progression (same order as docs/education/README.md) is
+// grouped into three streams you can read front to back or jump between;
+// EDUCATION_REFERENCES are the two hands-on references used alongside any group.
+const EDUCATION_GROUPS = [
+  {
+    icon: MessageSquare,
+    title: "Working with agents",
+    tagline: "Get oriented before you build",
+    steps: [
+      { title: "What agents are", href: "/docs/education/what-agents-are" },
+      { title: "Working with agents", href: "/docs/education/working-with-agents" },
+      { title: "Choosing models", href: "/docs/education/choosing-models" },
+    ],
+  },
+  {
+    icon: PenTool,
+    title: "Authoring skills",
+    tagline: "Write, harden, and test a skill",
+    steps: [
+      { title: "Your first skill", href: "/docs/education/your-first-skill" },
+      { title: "Writing safe skills", href: "/docs/education/writing-safe-skills" },
+      { title: "Debugging a skill", href: "/docs/education/debugging-skills" },
+      { title: "Writing portable skills", href: "/docs/education/portable-skills" },
+      { title: "Eval-driven development", href: "/docs/education/eval-driven-development" },
+    ],
+  },
+  {
+    icon: Rocket,
+    title: "Going further",
+    tagline: "Run at scale and give back",
+    steps: [
+      { title: "Agentic & autonomous work", href: "/docs/education/agentic-work" },
+      { title: "English as a programming language", href: "/docs/education/english-as-code" },
+      { title: "Contributing back", href: "/docs/education/contributing" },
+    ],
+  },
 ];
 
-// Two hands-on references that branch off the main path — you dip into them
-// while working the steps rather than reading them in sequence. `align` drops
-// each one from an end of the spine (pattern catalogue at the start, tutorials
-// at the end) so they read as spin-offs of the progression graph.
-const EDUCATION_BRANCHES = [
+// Two hands-on references that sit alongside the whole progression — you dip
+// into them while working any group rather than reading them in sequence.
+const EDUCATION_REFERENCES = [
   {
     icon: FileText,
     title: "Pattern catalogue",
-    desc: "Ready-to-copy skill, prompt, and tool-use patterns, each with notes on what worked and what didn't.",
+    desc: "Ready-to-copy skill and prompt patterns",
     href: "/docs/education/pattern-catalogue",
-    align: "start" as const,
   },
   {
     icon: Clock,
     title: "Tutorials",
-    desc: "A hands-on lab: build a small skill, give it an eval suite, and run it — in about 90 minutes.",
+    desc: "A hands-on 90-minute build-and-eval lab",
     href: "/docs/education/tutorials",
-    align: "end" as const,
   },
 ];
 
-// One compact node on the education progression snake. `className` sets the
-// width (fixed on the desktop snake for clean columns; full-width on mobile).
-function StepNode({
-  step,
-  className = "",
-}: {
-  step: (typeof EDUCATION_STEPS)[number];
-  className?: string;
-}) {
-  const Icon = step.icon;
+// One stream of the education progression: a titled card whose body is the
+// ordered list of pages in that group, each linking to its docs page.
+function GroupCard({ group }: { group: (typeof EDUCATION_GROUPS)[number] }) {
+  const Icon = group.icon;
   return (
-    <a
-      href={withBase(step.href)}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`Step ${step.n}: ${step.title}`}
-      className={`group flex items-center gap-2 rounded-xl border border-solid border-neutral-200 bg-default-background px-3 py-2.5 shadow-sm transition-all hover:border-brand-300 hover:shadow-md ${className}`}
-    >
-      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand-600 font-['Inter'] text-[12px] font-[700] leading-none text-white">
-        {step.n}
+    <div className="flex h-full flex-col rounded-2xl border border-solid border-neutral-200 bg-default-background px-6 py-6 shadow-sm">
+      <div className="flex items-center gap-2.5">
+        <Icon className="size-5 flex-none text-brand-700" />
+        <span className="text-heading-3 font-heading-3 text-default-font">
+          {group.title}
+        </span>
+      </div>
+      <span className="mt-1 text-caption font-caption text-subtext-color">
+        {group.tagline}
       </span>
-      <Icon className="size-4 flex-none text-brand-700" />
-      <span className="truncate text-caption-bold font-caption-bold text-default-font group-hover:text-brand-700">
-        {step.title}
-      </span>
-    </a>
+      <div className="mt-4 flex flex-col">
+        {group.steps.map((step) => (
+          <a
+            key={step.href}
+            href={withBase(step.href)}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex items-center justify-between gap-2 border-t border-solid border-neutral-100 py-3 text-body font-body text-default-font first:border-t-0 hover:text-brand-700"
+          >
+            <span>{step.title}</span>
+            <ArrowUpRight className="size-4 flex-none text-neutral-300 opacity-0 transition-opacity group-hover:text-brand-500 group-hover:opacity-100" />
+          </a>
+        ))}
+      </div>
+    </div>
   );
 }
 
-// A hands-on reference card that spins off the snake.
-function BranchCard({ branch }: { branch: (typeof EDUCATION_BRANCHES)[number] }) {
-  const Icon = branch.icon;
+// A hands-on reference that sits alongside every group. Rendered as a compact
+// link inside the shared dashed References box.
+function ReferenceCard({
+  reference,
+}: {
+  reference: (typeof EDUCATION_REFERENCES)[number];
+}) {
+  const Icon = reference.icon;
   return (
     <a
-      href={withBase(branch.href)}
+      href={withBase(reference.href)}
       target="_blank"
       rel="noreferrer"
-      className="group flex w-full max-w-[300px] flex-col items-start gap-2 rounded-2xl border border-dashed border-brand-300 bg-brand-50/60 px-4 py-4 shadow-sm transition-all hover:border-brand-500 hover:bg-brand-50 hover:shadow-md"
+      className="group flex w-full items-start gap-3 rounded-xl px-3 py-2 transition-all hover:bg-brand-50"
     >
-      <div className="flex w-full items-center justify-between">
-        <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-brand-100">
-          <Icon className="text-body-bold font-body-bold text-brand-700" />
-        </div>
-        <span className="inline-flex items-center rounded-full border border-solid border-brand-200 bg-white px-2 py-0.5 text-caption font-caption text-brand-600">
-          Reference
+      <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-brand-100">
+        <Icon className="text-body-bold font-body-bold text-brand-700" />
+      </div>
+      <div className="flex flex-col">
+        <span className="text-body-bold font-body-bold text-default-font group-hover:text-brand-700">
+          {reference.title}
+        </span>
+        <span className="text-caption font-caption text-subtext-color">
+          {reference.desc}
         </span>
       </div>
-      <span className="text-body-bold font-body-bold text-default-font group-hover:text-brand-700">
-        {branch.title}
-      </span>
-      <span className="text-caption font-caption text-subtext-color">
-        {branch.desc}
-      </span>
-      <span className="mt-auto inline-flex items-center gap-1 pt-1 text-caption font-caption text-brand-700">
-        Learn more
-        <ArrowUpRight className="size-3.5" />
-      </span>
     </a>
   );
 }
@@ -1233,92 +1256,42 @@ function ImmersiveGradientHero() {
           </span>
           <span className="text-body font-body text-subtext-color text-center">
             Magpie&apos;s maintainer-education stream teaches you that craft one
-            page at a time — no AI background needed. Follow the nine-step path in
-            order; two hands-on references sit alongside it. Every release ships
-            the learning material for the skills it contains
+            page at a time — no AI background needed. Work through the three
+            groups in order, or jump to the one you need; two hands-on references
+            sit alongside them all. Every release ships the learning material for
+            the skills it contains
             (<a className="text-brand-700 hover:text-brand-800 underline" href={withBase("/docs/principles")} target="_blank" rel="noreferrer">PRINCIPLE 18</a>).
           </span>
         </BlurFade>
-        {/* Progression snake, boustrophedon in three rows of three: steps 1–3
-            run left→right, the arrow U-turns down on the right into steps 4–6
-            (right→left), U-turns down again on the left into steps 7–9
-            (left→right). Fixed-width nodes keep the three columns aligned so the
-            turns are clean verticals. Below it sit the two hands-on references
-            as their own boxes. Mobile falls back to a plain top→bottom stack. */}
-        <div className="flex w-full flex-col items-center">
-          {/* Desktop 3×3 snake. The path drops on the right after row 1 and on
-              the left after row 2 (a vertical connector on the outer column);
-              the two references sit centred in those gaps. Connector offset is
-              half the 252px node width so it aligns to the outer column. */}
-          <div className="flex w-fit flex-col mobile:hidden">
-            {/* Row 1: 1 → 2 → 3 */}
-            <div className="flex items-stretch gap-2">
-              {EDUCATION_STEPS.slice(0, 3).map((step, i, row) => (
-                <React.Fragment key={step.title}>
-                  <StepNode step={step} className="w-[252px]" />
-                  {i < row.length - 1 && (
-                    <ArrowRight className="size-4 flex-none self-center text-brand-300" />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-            {/* Gap 1→2: path drops on the right, Pattern catalogue centred */}
-            <div className="relative flex justify-center py-5">
-              <div className="pointer-events-none absolute inset-y-0 right-[126px] flex flex-col items-center">
-                <span className="w-0.5 flex-1 bg-brand-200" />
-                <ArrowDown className="-mt-1 size-4 flex-none text-brand-400" />
-              </div>
-              <BranchCard branch={EDUCATION_BRANCHES[0]} />
-            </div>
-            {/* Row 2: 6 ← 5 ← 4 (runs right→left, so 4 sits under 3) */}
-            <div className="flex items-stretch gap-2">
-              {[EDUCATION_STEPS[5], EDUCATION_STEPS[4], EDUCATION_STEPS[3]].map(
-                (step, i, row) => (
-                  <React.Fragment key={step.title}>
-                    <StepNode step={step} className="w-[252px]" />
-                    {i < row.length - 1 && (
-                      <ArrowLeft className="size-4 flex-none self-center text-brand-300" />
-                    )}
-                  </React.Fragment>
-                ),
-              )}
-            </div>
-            {/* Gap 2→3: path drops on the left, Tutorials centred */}
-            <div className="relative flex justify-center py-5">
-              <div className="pointer-events-none absolute inset-y-0 left-[126px] flex flex-col items-center">
-                <span className="w-0.5 flex-1 bg-brand-200" />
-                <ArrowDown className="-mt-1 size-4 flex-none text-brand-400" />
-              </div>
-              <BranchCard branch={EDUCATION_BRANCHES[1]} />
-            </div>
-            {/* Row 3: 7 → 8 → 9 */}
-            <div className="flex items-stretch gap-2">
-              {EDUCATION_STEPS.slice(6, 9).map((step, i, row) => (
-                <React.Fragment key={step.title}>
-                  <StepNode step={step} className="w-[252px]" />
-                  {i < row.length - 1 && (
-                    <ArrowRight className="size-4 flex-none self-center text-brand-300" />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-          {/* Mobile: a plain vertical stack of all nine steps, with each
-              reference dropped in at the same row boundary as on desktop */}
-          <div className="hidden w-full flex-col items-stretch mobile:flex">
-            {EDUCATION_STEPS.map((step, i) => (
-              <React.Fragment key={step.title}>
-                <StepNode step={step} className="w-full" />
-                {(i === 2 || i === 5) && (
-                  <div className="my-2">
-                    <BranchCard branch={EDUCATION_BRANCHES[i === 2 ? 0 : 1]} />
-                  </div>
-                )}
-                {i < EDUCATION_STEPS.length - 1 && (
-                  <ArrowDown className="my-1 size-4 self-center text-brand-300" />
-                )}
-              </React.Fragment>
+        {/* Three grouped streams of the progression, side by side (each a
+            titled card listing its pages), with the two hands-on references
+            below in a shared dashed box that spans all three. Mobile stacks the
+            groups vertically and the references single-column. */}
+        <div className="flex w-full max-w-[1100px] flex-col gap-6">
+          <div className="grid grid-cols-3 items-stretch gap-4 auto-rows-fr mobile:grid-cols-1">
+            {EDUCATION_GROUPS.map((group) => (
+              <GroupCard key={group.title} group={group} />
             ))}
+          </div>
+          {/* References box — dashed to read as supporting material used
+              alongside any group, not a fourth step in the progression. */}
+          <div className="flex w-full flex-col gap-3 rounded-2xl border border-dashed border-brand-300 bg-brand-50/40 px-6 py-5">
+            <div className="flex items-baseline gap-2">
+              <div className="flex items-center gap-2">
+                <Library className="size-5 flex-none text-default-font" />
+                <span className="text-body-bold font-body-bold text-default-font">
+                  References
+                </span>
+              </div>
+              <span className="text-caption font-caption text-subtext-color">
+                — use alongside any group
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mobile:grid-cols-1">
+              {EDUCATION_REFERENCES.map((reference) => (
+                <ReferenceCard key={reference.title} reference={reference} />
+              ))}
+            </div>
           </div>
         </div>
         <a href={withBase("/docs/education/readme")} target="_blank" rel="noreferrer" className="mt-10">
