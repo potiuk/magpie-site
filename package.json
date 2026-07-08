@@ -10,9 +10,9 @@
     "sync-community": "node scripts/sync-community.mjs",
     "prebuild": "npm run sync-docs",
     "dev": "bash scripts/dev.sh",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
