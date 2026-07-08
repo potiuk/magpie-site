@@ -15,7 +15,13 @@ TMP="$(mktemp -d "${TMPDIR:-/tmp}/magpie-docs.XXXXXXXX")"
 trap 'rm -rf "$TMP"' EXIT
 
 echo "→ Cloning $REPO@$BRANCH (sparse, docs/ + images/ + assets/ + skills/ + tools/ + organizations/)"
-git clone --depth 1 --branch "$BRANCH" --filter=blob:none --sparse "$REPO" "$TMP" >/dev/null 2>&1
+# The source repo is public, so no credentials are needed. Disable the credential
+# helper for this clone (and persist that into the repo config so the partial-clone
+# lazy fetch during `sparse-checkout set` inherits it) — otherwise a system-level
+# credential.helper=osxkeychain tries to store into a keychain that is unwritable in
+# sandboxed/CI environments and spams `fatal: failed to store: -60008`.
+git clone --depth 1 --branch "$BRANCH" --filter=blob:none --sparse \
+  --config credential.helper= "$REPO" "$TMP" >/dev/null 2>&1
 (cd "$TMP" && git sparse-checkout set docs images assets skills tools organizations >/dev/null)
 
 echo "→ Replacing $DEST"
