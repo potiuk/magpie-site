@@ -51,6 +51,7 @@ export function SiteFooter() {
             <a className="inline-flex items-center gap-1 text-body font-body text-subtext-color hover:text-brand-600" href={withBase("/docs")} target="_blank" rel="noreferrer">Documentation<ArrowUpRight className="size-3.5" /></a>
             <a className="inline-flex items-center gap-1 text-body font-body text-subtext-color hover:text-brand-600" href={withBase("/architecture")} target="_blank" rel="noreferrer">Architecture<ArrowUpRight className="size-3.5" /></a>
             <a className="text-body font-body text-subtext-color hover:text-brand-600" href={withBase("/downloads")}>Downloads</a>
+            <a className="text-body font-body text-subtext-color hover:text-brand-600" href={withBase("/brand")}>Brand assets</a>
             <a className="inline-flex items-center gap-1 text-body font-body text-subtext-color hover:text-brand-600" href="https://github.com/apache/magpie/issues" target="_blank" rel="noreferrer">Roadmap<ArrowUpRight className="size-3.5" /></a>
             <a className="inline-flex items-center gap-1 text-body font-body text-subtext-color hover:text-brand-600" href="https://github.com/apache/magpie/releases" target="_blank" rel="noreferrer">Changelog<ArrowUpRight className="size-3.5" /></a>
           </div>
