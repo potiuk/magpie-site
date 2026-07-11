@@ -27,6 +27,7 @@ import {
   EyeOff,
   FileText,
   Filter,
+  GitCompare,
   GitMerge,
   GitPullRequest,
   Globe,
@@ -201,6 +202,15 @@ const SKILL_FAMILIES = [
     overview: "/docs/contributor-growth/readme",
     cta: "Hard to grow contributors into committers?",
     desc: "The contributor-to-committer path — welcome first-timers, keep the backlog newcomer-ready, track activity, assemble nomination evidence, and run post-vote onboarding.",
+  },
+  {
+    name: "pairing",
+    icon: GitCompare,
+    modes: "Pairing",
+    status: "experimental",
+    overview: "/docs/pairing/readme",
+    cta: "Want a pre-flight review of your own changes before opening a PR?",
+    desc: "Developer-side pre-flight review that runs in your own dev loop — self-review or three independent axis-focused passes (correctness, security, conventions). Read-only, opens no PR, mutates nothing.",
   },
   {
     name: "utilities",
