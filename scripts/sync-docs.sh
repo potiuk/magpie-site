@@ -84,6 +84,12 @@ else
   echo "⚠ no skills/ in framework checkout; leaving existing $COUNTS_OUT untouched"
 fi
 
+# Guard: every family now in skill-counts.json has a card on the landing page.
+# Runs right after the counts regenerate, so a newly-added upstream family
+# (a new `family:` value) fails the sync unless its landing card is added too.
+echo "→ Checking every skill family has a landing-page card"
+python3 "$(dirname "$0")/check-landing-families.py"
+
 TOOLS_OUT="$(dirname "$0")/../src/data/tools.json"
 echo "→ Generating Tools & Capabilities summary → $TOOLS_OUT"
 if [ -d "$TMP/tools" ]; then
