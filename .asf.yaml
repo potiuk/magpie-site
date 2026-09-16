@@ -22,6 +22,21 @@ github:
   features:
     issues: true
 
+  # Squash only: every pull request lands on main as a single commit, so the
+  # history stays linear and a contributor's work-in-progress commits do not
+  # become permanent. Rebase and merge-commit buttons are off.
+  enabled_merge_buttons:
+    squash: true
+    merge: false
+    rebase: false
+
+  pull_requests:
+    # Offer the "Update branch" button, so a maintainer can bring a stale pull
+    # request up to date with main from the UI without merging it. GitHub does
+    # that push server-side as the repository, which works even where pushing
+    # to a contributor's fork by hand is refused.
+    allow_update_branch: true
+
   # Branch protection for main. Only checks that run on EVERY pull request may
   # be listed here: a required context whose workflow does not trigger is never
   # reported, and the pull request blocks forever with nothing to re-run.
